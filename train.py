@@ -100,7 +100,7 @@ def main(_):
 
         prog_bar.update("epoch={}/{}, loss={:.4f}, lr={:.1e}".format(
             ((steps - 1) // steps_per_epoch) + 1, cfg['epoch'],
-            total_loss.numpy(), optimizer.lr(steps).numpy()))
+            total_loss.numpy(), optimizer.learning_rate.numpy()))
 
         if steps % 10 == 0:
             with summary_writer.as_default():
@@ -109,7 +109,7 @@ def main(_):
                 for k, l in losses.items():
                     tf.summary.scalar('loss/{}'.format(k), l, step=steps)
                 tf.summary.scalar(
-                    'learning_rate', optimizer.lr(steps), step=steps)
+                    'learning_rate', optimizer.learning_rate, step=steps)
 
         if steps % cfg['save_steps'] == 0:
             manager.save()
